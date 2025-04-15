@@ -1,6 +1,12 @@
+# check if arguments provided
 if {$argc != 1} {
-    puts "vivado -mode batch -source make.tcl -notrace -tclargs <action>"
+    puts "vivado -mode batch -source tcl/make.tcl -notrace -tclargs <action>"
     exit 1
+}
+
+# delete log files that get generated
+foreach logs [glob -nocomplain -types f *backup*] {
+    file delete -force $logs
 }
 
 # =====> Supress excessive logs <===== #
@@ -90,9 +96,4 @@ if {$action eq "impl"} {
 if {$action eq "gen-bit"} {
     # write_bitstream -force $outputDir/nameOfBitstream.bit
     puts "\n/////////////////////// Bitstream generation finished ///////////////////////\n"
-}
-
-# delete log files that get generated
-foreach logs [glob -nocomplain -types f *backup*] {
-    file delete -force $logs
 }
